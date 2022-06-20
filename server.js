@@ -9,7 +9,8 @@ import userRoutes from "./Routes/userRoutes.js";
 
 const app = express();
 const port = process.env.PORT;
-const DATABASE_URL =process.env.DATABASE_URL
+const DATABASE_URL_LOCAL =process.env.DATABASE_URL_LOCAL
+const DATABASE_URL_ATLAS =process.env.DATABASE_URL_ATLAS
 
 //cors policy
 app.use(cors());
@@ -18,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 //Database connection
-connectDb(DATABASE_URL);
+connectDb(DATABASE_URL_LOCAL, DATABASE_URL_ATLAS);
 
 //Load Routes
 app.use("/user",userRoutes)
