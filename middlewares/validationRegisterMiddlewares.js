@@ -1,21 +1,18 @@
 import Joi from 'joi';
 
 const validationRegister = async (req,res,next)=>{
-   
-        const {name,email,password,password_confirmation,tc} = req.body
         const schema = Joi.object({
             name: Joi.string()
-                .alphanum()
-                .min(3)
-                .max(30)
+                .min(3).message("the minimum number of string characters required is 3 or more")
+                .max(30).message("the maximum number of string characters required is 3o or less than")
+                .pattern(new RegExp(/^[a-zA-Z ]*$/))
                 .required(),
                 email: Joi.string()
-                .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+                .email(),
         
             password: Joi.string()
                .required()
-            
-                .pattern(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})")),
+                .pattern(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,16})")).message("the password should contain lowercase, uppercase and alphanumeric value"),
         
             password_confirmation: Joi.ref('password')
            

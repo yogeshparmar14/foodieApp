@@ -2,17 +2,14 @@ import userModel from "../models/schemaUser.js"
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+const userRegistration = async (req,res)=>{
+    const {name,email,password,password_confirmation,tc} = req.body
 
-class UserController{
-    static userRegistration = async (req,res)=>{
-        const {name,email,password,password_confirmation,tc} = req.body
-
-        const user = await userModel.findOne({email:email})
-        if(user){
-            res.send({"status":"failed","message":"Email already exists"})
-        }else{
-            if(name&&email&&password&&password_confirmation&&tc){
-               if(password===password_confirmation){
+    const user = await userModel.findOne({email})
+    if(user)
+        return res.send({"message":"Email already exists","status":400})
+    if(!name || !email||!password||!password_confirmation||!tc)
+        return res.send({"message":"All fields are required","status":400})     
                  try {
                     const salt = await bcrypt.genSalt(10)
                     const hashPassword = await bcrypt.hash(password,salt)
@@ -23,29 +20,25 @@ class UserController{
                         tc:tc
                     })
                     await doc.save()
-                    const saved_user = await userModel.findOne({email:email})
+                    const savedUser = await userModel.findOne({email})
                     //Generating JWT TOKEN
-                    const token = jwt.sign({userID:saved_user._id},process.env.JWT_SECRET_KEY,{expiresIn:'5D'})
-                    res.send({"message":"Signup successfully!", "status":"200",
+                    const token = jwt.sign({userID:savedUser._id},process.env.JWT_SECRET_KEY,{expiresIn:'5D'})
+                    res.send({"message":"Signup successfully!", "status":200,
                     "data":{
-                        "_id":saved_user._id,
-                        "name":saved_user.name,
-                        "email":saved_user.email,
+                        "_id":savedUser._id,
+                        "name":savedUser.name,
+                        "email":savedUser.email,
                         "access_token":token}
                     })
                  } catch (error) {
                      console.log(error)
-                     res.send({"status":"failed","message":"Unable to register"})
-                 }
-               }else{
-                res.send({"status":"failed","message":"Password and Confirm Password doesn't match"})
+                     res.send({"message":"Unable to register","status":400})
+                 
+               
                }
-            }else{
-                res.send({"status":"failed","message":"All fields are required"})
             }
-        }
         
-    }
-}
+        
+    
 
-    export default UserController;
+    export default userRegistration;

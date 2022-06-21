@@ -1,0 +1,2 @@
+https://restaurant-app-yogesh-parmar.herokuapp.com/
+{ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }
