@@ -1,5 +1,5 @@
 import express from 'express';
-import userRegistration from '../controllers/userController.js';
+import  { userRegistration,userLogin } from '../controllers/userController.js';
 import validationRegister from "../middlewares/validationRegisterMiddlewares.js";
  
 
@@ -12,6 +12,7 @@ const router = express.Router();
 
 //Public routes
 router.post('/register',validationRegister,userRegistration);
+router.post('/login',userLogin)
  
 
 

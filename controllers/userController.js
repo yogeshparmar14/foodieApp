@@ -32,7 +32,7 @@ const userRegistration = async (req,res)=>{
                         "_id":savedUser._id,
                         "name":savedUser.name,
                         "email":savedUser.email,
-                        "access_token":token}
+                        "accessToken":token}
                     })
                  } catch (error) {
                      console.log(error)
@@ -41,4 +41,29 @@ const userRegistration = async (req,res)=>{
                
                }
             }
-    export default userRegistration;
+
+const userLogin = async(req,res)=>{
+  
+        const {email,password} = req.body
+            if(!email||!password)
+               return res.send({"message":"All fields are required","status":400})
+            const user = await userModel.findOne({email:email})
+            if(user == null)
+               return res.send({ "message":"you are not registered user","status":400})
+            const isMatch = await bcrypt.compare(password,user.password)
+            if((user.email != email) || !isMatch)
+               return res.send({"message":"Email or Password is not valid","status":400})
+            try {
+                 //Generating JWT token
+                const token = jwt.sign({userID:user._id},process.env.JWT_SECRET_KEY,{expiresIn:'5D'})
+                    res.send({"message":"Login sucess","status":200,
+                    "data":{
+                        "_id":user._id,
+                        "name":user.name,
+                        "email":user.email,
+                        "accessToken":token}})
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+    export { userRegistration,userLogin };
