@@ -1,23 +1,27 @@
-import userModel from "../models/schemaUser.js"
+import userModel from "../models/schemaRegister.js"
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const userRegistration = async (req,res)=>{
-    const {name,email,password,password_confirmation,tc} = req.body
+    const {name,email,password,termCondition,userType} = req.body
 
     const user = await userModel.findOne({email})
     if(user)
         return res.send({"message":"Email already exists","status":400})
-    if(!name || !email||!password||!password_confirmation||!tc)
+    if(!name || !email||!password||!termCondition||!userType)
         return res.send({"message":"All fields are required","status":400})     
-                 try {
+                try {
+                    const date = new Date().getTime();
+                    console.log(date)
                     const salt = await bcrypt.genSalt(10)
                     const hashPassword = await bcrypt.hash(password,salt)
                     const doc = new userModel({
                         name:name,
                         email:email,
                         password:hashPassword,
-                        tc:tc
+                        termCondition:termCondition,
+                        createdAt:date,
+                        userType:userType
                     })
                     await doc.save()
                     const savedUser = await userModel.findOne({email})
@@ -37,8 +41,4 @@ const userRegistration = async (req,res)=>{
                
                }
             }
-        
-        
-    
-
     export default userRegistration;

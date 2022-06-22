@@ -13,8 +13,9 @@ const validationRegister = async (req,res,next)=>{
             password: Joi.string()
                .required()
                 .pattern(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,16})")).message("the password should contain lowercase, uppercase and alphanumeric value"),
-        
-            password_confirmation: Joi.ref('password')
+            userType:Joi.string()
+                .required()
+                .pattern(new RegExp(/(ADMIN|USER)/)).message(`usertype should be 'ADMIN' or 'USER'`)
            
     }).unknown(true)
 
