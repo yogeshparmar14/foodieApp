@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const validationRegister = async (req,res,next)=>{
+const authValidation = async (req,res,next)=>{
         const schema = Joi.object({
             name: Joi.string()
                 .min(3).message("the minimum number of string characters required is 3 or more")
@@ -14,7 +14,6 @@ const validationRegister = async (req,res,next)=>{
                .required()
                 .pattern(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,16})")).message("the password should contain lowercase, uppercase and alphanumeric value"),
             userType:Joi.string()
-                .required()
                 .pattern(new RegExp(/(ADMIN|USER)/)).message(`usertype should be 'ADMIN' or 'USER'`)
            
     }).unknown(true)
@@ -29,4 +28,4 @@ const validationRegister = async (req,res,next)=>{
 
 }
 
-export default validationRegister;
+export default authValidation;

@@ -12,7 +12,7 @@ const registerSchema = new mongoose.Schema({
     createdAt:{type:String},
     updatedAt:{type:Number},
     isActive:{type:Boolean},
-    userType:{type:String,required:true,trim:true}
+    userType:{type:String,default:"USER",trim:true}
 })
 
 
