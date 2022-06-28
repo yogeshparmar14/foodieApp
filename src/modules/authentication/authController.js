@@ -11,8 +11,7 @@ const registration = async (req,res)=>{
     if(!name || !email||!password||!termCondition)
         return res.send({"message":"All fields are required","status":400})     
                 try {
-                    const date = new Date().getTime();
-                    console.log(date)
+                
                     const salt = await bcrypt.genSalt(10)
                     const hashPassword = await bcrypt.hash(password,salt)
                     const doc = new userModel({
@@ -20,7 +19,6 @@ const registration = async (req,res)=>{
                         email:email,
                         password:hashPassword,
                         termCondition:termCondition,
-                        createdAt:date,
                         userType:userType
                     })
                     await doc.save()

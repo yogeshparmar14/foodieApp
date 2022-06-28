@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 //defining schema
-
+const date = new Date().getTime();
 
 const registerSchema = new mongoose.Schema({
    
@@ -9,7 +9,7 @@ const registerSchema = new mongoose.Schema({
     email:{type:String,required:true,trim:true},
     password:{type:String,required:true,trim:true},
     termCondition:{type:Boolean,required:true},
-    createdAt:{type:String},
+    createdAt:{type:String,default:date},
     updatedAt:{type:Number},
     isActive:{type:Boolean},
     userType:{type:String,default:"USER",trim:true}
