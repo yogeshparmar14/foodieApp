@@ -5,7 +5,7 @@ const authValidation = async (req,res,next)=>{
             name: Joi.string()
                 .min(3).message("the minimum number of string characters required is 3 or more")
                 .max(30).message("the maximum number of string characters required is 3o or less than")
-                .pattern(new RegExp(/^[a-zA-Z ]*$/))
+                .pattern(new RegExp(/^[a-zA-Z ]*$/)).message("Name can only contain alphabets")
                 .required(),
                 email: Joi.string()
                 .email(),
@@ -25,7 +25,8 @@ const authValidation = async (req,res,next)=>{
         console.log(error);
          res.status(400).send({
             data: {},
-            error:error  
+            // error:error
+            error:error.details[0].message
             })
     }
 
