@@ -1,2 +1,6 @@
 https://restaurant-app-yogesh-parmar.herokuapp.com/
 { minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }
+mongodb+srv://yogeshparmar:Yogesh1%21%40%23%24%25>@cluster0.mgnye.mongodb.net/?retryWrites=true&w=majority
+DATABASE_URL_ATLAS="mongodb+srv://yogeshparmar:Yogesh1%21%40%23%24%25@cluster0.mgnye.mongodb.net/restaurantapp?retryWrites=true&w=majority"
+
+mongodb+srv://yogeshparmar:Yogesh12%0A@cluster0.kvkv0.mongodb.net/?retryWrites=true&w=majority
