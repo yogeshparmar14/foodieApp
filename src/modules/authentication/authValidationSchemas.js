@@ -23,7 +23,10 @@ const authValidation = async (req,res,next)=>{
        next();
     } catch (error) {
         console.log(error);
-        res.send(error)
+         res.status(403).send({
+            data: {},
+            error:error  
+            })
     }
 
 }

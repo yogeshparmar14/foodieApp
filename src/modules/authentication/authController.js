@@ -62,7 +62,7 @@ const login = async(req,res)=>{
   
         const {email,password} = req.body
             if(!email||!password)
-               return res.send({status:403,
+               return res.status(403).send({
                 data: {},
                 error: {
                    email: "Email is required",
