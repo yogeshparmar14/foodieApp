@@ -6,10 +6,22 @@ const registration = async (req,res)=>{
     const {name,email,password,termCondition,userType} = req.body
 
     const user = await userModel.findOne({email})
-    if(user)
-        return res.send({"message":"Email already exists","status":400})
+    if(user) return res.send({status:403,
+        data: {},
+        error: {
+           email: "Email is already registered email"
+        }
+        })
     if(!name || !email||!password||!termCondition)
-        return res.send({"message":"All fields are required","status":400})     
+        return res.send({status:403,
+            data: {},
+            error: {
+               email: "Email is required",
+               password: "Password is required",
+               termCondition:"TermCondition is required"
+            
+            }
+            })     
                 try {
                 
                     const salt = await bcrypt.genSalt(10)
@@ -34,7 +46,13 @@ const registration = async (req,res)=>{
                     })
                  } catch (error) {
                      console.log(error)
-                     res.send({"message":"Unable to register","status":400})
+                     res.send({status:403,
+                        data: {},
+                        error: {
+                           message: "unable to signup"
+                        
+                        }
+                        })
                  
                
                }
@@ -44,13 +62,34 @@ const login = async(req,res)=>{
   
         const {email,password} = req.body
             if(!email||!password)
-               return res.send({"message":"All fields are required","status":400})
+               return res.send({status:403,
+                data: {},
+                error: {
+                   email: "Email is required",
+                   password: "Password is required",
+                
+                }
+                })
             const user = await userModel.findOne({email:email})
             if(user == null)
-               return res.send({ "message":"you are not registered user","status":400})
+               return res.send({status:403,
+                data: {},
+                error: {
+                   email: "please enter registered email",
+                   password: "please enter register password",
+                
+                }
+                })
             const isMatch = await bcrypt.compare(password,user.password)
             if((user.email != email) || !isMatch)
-               return res.send({"message":"Email or Password is not valid","status":400})
+              { return res.send({status:403,
+                data: {},
+                error: {
+                   email: "please enter registered email",
+                   password: "please enter register password",
+                
+                }
+                })}
             try {
                  //Generating JWT token
                 const token = jwt.sign({userID:user._id},process.env.JWT_SECRET_KEY,{expiresIn:'5D'})
@@ -85,7 +124,17 @@ const adminLogin = async(req,res)=>{
                         "accessToken":token}})
                 } catch (error) {
                     console.log(error)
-                }
-}
+                    res.send({status:403,
+                        data: {},
+                        error: {
+                           message: "unable to signup"
+                        
+                        }
+                        })
+                 
+               
+               }
+            }
+
 
     export { registration,login };
