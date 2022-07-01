@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const  mongoose = require("mongoose");
 
 const connectDb = async (DATABASE_URL_LOCAL, DATABASE_URL_ATLAS)=>{
     try {
@@ -18,25 +18,4 @@ const connectDb = async (DATABASE_URL_LOCAL, DATABASE_URL_ATLAS)=>{
     }
 }
 
-// const connectDb = async (DATABASE_URL_ATLAS)=>{
-//     try { 
-//          const DB_OPTION = {
-//             dbName:"restaurantapp"
-//         }
-       
-//         let DATABASE_URL = DATABASE_URL_ATLAS
-       
-
-//        await mongoose.connect(DATABASE_URL, DB_OPTION,{
-//         useUnifiedTopology: true,
-//         useNewUrlParser: true
-    
-//     } )
-//        console.log("connected successfully")
-
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
-export default connectDb;
+module.exports = connectDb;

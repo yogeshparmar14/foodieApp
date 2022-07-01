@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose =require("mongoose");
 
 //defining schema
 const date = new Date().getTime();
@@ -19,5 +19,4 @@ const registerSchema = new mongoose.Schema({
 //model
 
 const userModel = mongoose.model("user",registerSchema)
-
-export default userModel;
+module.exports = userModel;

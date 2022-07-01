@@ -1,12 +1,13 @@
-import dotenv from "dotenv";
+const dotenv = require("dotenv");
     dotenv.config();
-import bodyParser from 'body-parser'
-import multipart from 'connect-multiparty'
-import express from "express";
-import cors from "cors";
-import connectDb from "./src/db/connectiondb.js";
-import userRoutes from "./src/routes/userRoutes.js";
-import adminRoutes from "./src/routes/adminRoutes.js";
+const bodyParser =require('body-parser')
+const multipart = require('connect-multiparty')
+const express = require("express");
+const cors= require("cors");
+const connectDb=require("./src/db/connectiondb.js");
+const userRoutes =require("./src/routes/userRoutes.js");
+const adminRoutes =require("./src/routes/adminRoutes.js");
+const commonRoutes =require("./src/modules/common/uploadFile.js")
 
 
 const app = express();
@@ -28,9 +29,8 @@ connectDb(DATABASE_URL_LOCAL, DATABASE_URL_ATLAS);
 
 //for Loading Routes
 app.use("/user",userRoutes)
-
-//for Loading Routes
 app.use("/admin",adminRoutes)
+app.use("/common",commonRoutes)
 
 app.listen(port,()=>{
     console.log(`Server listening at http://localhost:${port}`)

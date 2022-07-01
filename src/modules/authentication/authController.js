@@ -1,19 +1,19 @@
-import userModel from "../../db/models/registerSchema.js"
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+const userModel=require("../../db/models/registerSchema.js")
+const bcrypt = require('bcrypt');
+const jwt =require('jsonwebtoken');
 
 const registration = async (req,res)=>{
     const {name,email,password,termCondition,userType} = req.body
 
     const user = await userModel.findOne({email})
-    if(user) return res.send({status:403,
+    if(user) return res.status(403).send({
         data: {},
         error: {
            email: "Email is already registered email"
         }
         })
     if(!name || !email||!password||!termCondition)
-        return res.send({status:403,
+        return res.status(403).send({
             data: {},
             error: {
                email: "Email is required",
@@ -46,7 +46,7 @@ const registration = async (req,res)=>{
                     })
                  } catch (error) {
                      console.log(error)
-                     res.send({status:403,
+                     res.status(403).send({
                         data: {},
                         error: {
                            message: "unable to signup"
@@ -72,7 +72,7 @@ const login = async(req,res)=>{
                 })
             const user = await userModel.findOne({email:email})
             if(user == null)
-               return res.send({status:403,
+               return res.status(403).send({
                 data: {},
                 error: {
                    email: "please enter registered email",
@@ -82,7 +82,7 @@ const login = async(req,res)=>{
                 })
             const isMatch = await bcrypt.compare(password,user.password)
             if((user.email != email) || !isMatch)
-              { return res.send({status:403,
+              { return res.status(403).send({
                 data: {},
                 error: {
                    email: "please enter registered email",
@@ -93,7 +93,7 @@ const login = async(req,res)=>{
             try {
                  //Generating JWT token
                 const token = jwt.sign({userID:user._id},process.env.JWT_SECRET_KEY,{expiresIn:'5D'})
-                    res.send({"message":"Login sucess","status":200,
+                    res.status(200).send({"message":"Login sucess","status":200,
                     "data":{
                         "_id":user._id,
                         "name":user.name,
@@ -103,38 +103,5 @@ const login = async(req,res)=>{
                     console.log(error)
                 }
             }
-const adminLogin = async(req,res)=>{
-    const {email,password} = req.body
-            if(!email||!password)
-               return res.send({"message":"All fields are required","status":400})
-            const user = await userModel.findOne({email:email})
-            if(user == null)
-               return res.send({ "message":"you are not registered user","status":400})
-            const isMatch = await bcrypt.compare(password,user.password)
-            if((user.email != email) || !isMatch)
-               return res.send({"message":"Email or Password is not valid","status":400})
-            try {
-                 //Generating JWT token
-                const token = jwt.sign({userID:user._id},process.env.JWT_SECRET_KEY,{expiresIn:'5D'})
-                    res.send({"message":"Login sucess","status":200,
-                    "data":{
-                        "_id":user._id,
-                        "name":user.name,
-                        "email":user.email,
-                        "accessToken":token}})
-                } catch (error) {
-                    console.log(error)
-                    res.send({status:403,
-                        data: {},
-                        error: {
-                           message: "unable to signup"
-                        
-                        }
-                        })
-                 
-               
-               }
-            }
 
-
-    export { registration,login };
+module.exports = { registration,login };

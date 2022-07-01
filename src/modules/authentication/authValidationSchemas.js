@@ -1,4 +1,4 @@
-import Joi from 'joi';
+const Joi = require('joi');
 
 const authValidation = async (req,res,next)=>{
         const schema = Joi.object({
@@ -8,7 +8,8 @@ const authValidation = async (req,res,next)=>{
                 .pattern(new RegExp(/^[a-zA-Z ]*$/)).message("Name can only contain alphabets")
                 .required(),
                 email: Joi.string()
-                .email(),
+                .email().message("Please enter valid Email")
+                .required(),
         
             password: Joi.string()
                .required()
@@ -22,14 +23,17 @@ const authValidation = async (req,res,next)=>{
         const value = await schema.validateAsync(req.body,{abortEarly:false});
        next();
     } catch (error) {
-        console.log(error);
+        const errors = {};
+        error.details.forEach(detail => {
+            errors[detail.context.key]=detail.message;
+        });
+
          res.status(400).send({
             data: {},
-            // error:error
-            error:error.details[0].message
+            errors
             })
     }
 
 }
 
-export default authValidation;
+module.exports = authValidation;

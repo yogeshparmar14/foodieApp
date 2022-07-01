@@ -3,4 +3,105 @@ https://restaurant-app-yogesh-parmar.herokuapp.com/
 mongodb+srv://yogeshparmar:Yogesh1%21%40%23%24%25>@cluster0.mgnye.mongodb.net/?retryWrites=true&w=majority
 DATABASE_URL_ATLAS="mongodb+srv://yogeshparmar:Yogesh1%21%40%23%24%25@cluster0.mgnye.mongodb.net/restaurantapp?retryWrites=true&w=majority"
 
-mongodb+srv://yogeshparmar:Yogesh12%0A@cluster0.kvkv0.mongodb.net/?retryWrites=true&w=majority
+mongodb+srv://yogeshparmar:Yogesh12%0A@cluster0.kvkv0.mongodb.net/?retryWrites=true&w=majority 
+return res.send({"message":"Email or Password is not valid", "status":400})
+
+{
+    "data": {},
+    "error": [
+        {
+            "message": "Name can only contain alphabets",
+            "path": [
+                "name"
+            ],
+            "type": "string.pattern.base",
+            "context": {
+                "regex": {},
+                "value": "de1",
+                "label": "name",
+                "key": "name"
+            }
+        }
+    ]
+}
+
+{
+    "data": {},
+    "error": {
+        "message": "Name can only contain alphabets",
+        "path": [
+            "name"
+        ],
+        "type": "string.pattern.base",
+        "context": {
+            "regex": {},
+            "value": "de1",
+            "label": "name",
+            "key": "name"
+        }
+    }
+}
+
+{
+    "data": {},
+    "error": {
+        "_original": {
+            "name": "de1",
+            "email": "shadee7we6654@gmail.in",
+            "password": "Shaurya1@",
+            "termCondition": true,
+            "userType": "USER"
+        },
+        "details": [
+            {
+                "message": "Name can only contain alphabets",
+                "path": [
+                    "name"
+                ],
+                "type": "string.pattern.base",
+                "context": {
+                    "regex": {},
+                    "value": "de1",
+                    "label": "name",
+                    "key": "name"
+                }
+            }
+        ]
+    }
+}
+
+.message("the minimum number of string characters required is 3 or more")
+.message("Name can only contain alphabets")
+
+{
+  data: {}
+  error: {
+   name: "Name is required",
+   password: "Password should contain alphanumaric...."
+  }
+}
+
+
+ data: {},
+            error:error
+            // error:error.details[0].message
+
+            {
+                    name: error.details[0].message,
+                    password:error.details[0].message
+                }
+
+                const fileFilter = (req,file,cb)=>{
+    if(file.mimetype.split("/")[0]==="image"){
+        cb(null,true)
+    }else{
+        cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"),false)
+    }
+}
+
+const router = express.Router();
+const upload = multer({
+    storage,
+    fileFilter,
+    limits:{fileSize:99999999999,files:2}
+});

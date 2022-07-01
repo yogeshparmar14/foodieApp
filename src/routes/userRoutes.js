@@ -1,6 +1,6 @@
-import express from 'express';
-import { registration,login } from '../modules/authentication/authController.js';
-import authValidation from "../modules/authentication/authValidationSchemas.js";
+const express = require('express');
+const { registration,login } = require('../modules/authentication/authController.js');
+const authValidation =require("../modules/authentication/authValidationSchemas.js");
  
 
 const router = express.Router();
@@ -19,4 +19,4 @@ router.post('/login',login)
 
 
 
-export default router;
+module.exports = router;

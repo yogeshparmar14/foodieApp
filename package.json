@@ -10,7 +10,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
     "aws-sdk": "^2.1161.0",
     "bcrypt": "^5.0.1",

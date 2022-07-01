@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 const date = new Date().getTime();
 const categorySchema = new mongoose.Schema({
    
@@ -14,4 +14,4 @@ const categorySchema = new mongoose.Schema({
 
 const userModel = mongoose.model("admin",categorySchema)
 
-export default userModel;
+module.exports = userModel;

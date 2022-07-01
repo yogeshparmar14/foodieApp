@@ -1,10 +1,8 @@
-import dotenv from "dotenv";
-    dotenv.config();
-import S3 from 'aws-sdk'
-import { v4 as uuidv4 } from 'uuid';
-uuidv4();
+require("dotenv").config()
+const {S3} = require("aws-sdk")
+const uuid = require("uuid").v4
 
-const s3Uploadv2 = async (file) =>{
+exports.s3Uploadv2 = async (file) =>{
     const s3 = new S3({
         accessKeyId: process.env.ACCESS_KEY, 
   secretAccessKey: process.env.ACCESS_SECRET_KEY
@@ -26,5 +24,4 @@ const s3Uploadv2 = async (file) =>{
 //    return await Promise.all(params.map(param=>s3.upload(param).promise()));
 
 
-}  
-export default s3Uploadv2
+}
