@@ -1,21 +1,8 @@
 require("dotenv").config()
-const uploadImage = require('./s3Service.js')
+const {s3Uploadv2} = require('./s3Service.js')
 const express = require("express");
 const multer = require("multer");
 const router = express.Router();
-
-
-
-
-// const storage = multer.diskStorage({
-//     destination:(req,file,cb)=>{
-//         cb(null,"uploads")
-//     },
-//     filename:(req,file,cb)=>{
-//            const { originalname } = file
-//         cb(null,`${uuid()}-${originalname}`);
-//     },
-// })
 
 const storage = multer.memoryStorage()
 
@@ -32,18 +19,12 @@ const upload = multer({
     fileFilter,
     limits:{fileSize:99999999999,files:2}
 });
-// single file upload
-// app.post("/upload",upload.single("file"),(req,res)=>{
-//    console.log(req.file)
-//     res.json({status:"success"});
-// });
 
-// multiple file upload
-router.use("/upload",upload.array("file"),async(req,res)=>{
+router.post("/upload",upload.array("file"),async(req,res)=>{
     try {
         console.log(req.files)
     const file =req.files[0];
-    const result = await uploadImage.s3Uploadv2(file)
+    const result = await s3Uploadv2(file)
     res.json({status:"success",result});
     // console.log(result)
     console.log(result.Location)
@@ -65,15 +46,5 @@ router.use((error,req,res,next) => {
         }
     }
 })
-
-//multifield upload
-// const multifield = upload.fields([
-//     {name:"avatar",maxCount:1},
-//     {name:"resume",maxCount:1}
-// ])
-// app.post("/upload",multifield,(req,res)=>{
-//     console.log(req.files)
-//     res.json({status:"success"});
-// });
 
 module.exports = router;
