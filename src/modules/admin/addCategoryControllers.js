@@ -15,15 +15,15 @@ const addCategory = async (req,res)=>{
             categoryImage:categoryImage,
         })
         await doc.save()
-        res.send({"message":"Signup successfully!", "status":200,
+        res.send({"message":`${categoryName} is added successfully!`, "status":200,
         "data":{
-            "categoryName":categoryName,
-            "categoryDescription":categoryDescription,
-            "categoryImage":categoryImage}
+            "categoryName":`${categoryName}`,
+            "categoryDescription":`${categoryDescription}`,
+            "categoryImage":`${categoryImage}`}
         })
     } catch (error) {
         console.log(error)
-                     res.send({"message":"Unable to add category","status":400})
+                     res.send({"message":"Unable to add category","status":403})
     }
 }
 

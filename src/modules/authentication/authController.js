@@ -35,8 +35,13 @@ const registration = async (req,res)=>{
                     })
                     await doc.save()
                     const savedUser = await userModel.findOne({email})
+                    // console.log(savedUser)
                     //Generating JWT TOKEN
-                    const token = jwt.sign({userID:savedUser._id},process.env.JWT_SECRET_KEY,{expiresIn:'5D'})
+                    let params ={
+                        userID:savedUser._id,
+                        userType:savedUser.userType
+                    }
+                    const token = await jwt.sign(params,process.env.JWT_SECRET_KEY,{expiresIn:'5D'})
                     res.send({"message":"Signup successfully!", "status":200,
                     "data":{
                         "_id":savedUser._id,
