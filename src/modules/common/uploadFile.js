@@ -35,3 +35,4 @@ router.post('/upload',upload.single("avatar"),(req,res)=>{
  
 
 module.exports = router;
+ 

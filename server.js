@@ -1,7 +1,5 @@
 const dotenv = require("dotenv");
     dotenv.config();
-const bodyParser =require('body-parser')
-// const multipart = require('connect-multiparty')
 const express = require("express");
 const cors= require("cors");
 const connectDb=require("./src/db/connectiondb.js");
@@ -20,9 +18,6 @@ app.use(cors());
 
 //json
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json());
-// app.use(multipart());
 //Database connection
 // connectDb(DATABASE_URL_ATLAS);
 connectDb(DATABASE_URL_LOCAL, DATABASE_URL_ATLAS);
