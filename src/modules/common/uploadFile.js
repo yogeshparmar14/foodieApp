@@ -1,51 +1,37 @@
-require("dotenv").config()
-const {s3Uploadv2} = require('./s3Service.js')
-const express = require("express");
-const multer = require("multer");
+require("dotenv").config();
+const aws = require('aws-sdk')
+const express = require('express')
+const multer = require('multer')
+const multerS3 = require('multer-s3')
+const uuid = require("uuid").v4;
 const router = express.Router();
 
-const storage = multer.memoryStorage()
-
-const fileFilter = (req,file,cb)=>{
-    if(file.mimetype.split("/")[0]==="image"){
-        cb(null,true)
-    }else{
-        cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"),false)
-    }
-}
-
-const upload = multer({
-    storage,
-    fileFilter,
-    limits:{fileSize:99999999999,files:2}
-});
-
-router.post("/upload",upload.array("file"),async(req,res)=>{
-    try {
-        console.log(req.files)
-    const file =req.files[0];
-    console.log(file)
-    const result = await s3Uploadv2(file)
-    res.json({status:"success",result});
-    // console.log(result)
-    console.log(result.Location)
-    } catch (error) {
-        console.log(error)
-    }
-});
-
-router.use((error,req,res,next) => {
-    if(error instanceof multer.MulterError){
-        if(error.code === "LIMIT_FILE_SIZE"){
-            return res.json({message:"file is too large"})
-        }
-        if(error.code ==="LIMIT_FILE_COUNT"){
-            return res.json({message:"file limit is reached"})
-        }
-        if(error.code === "LIMIT_UNEXPECTED_FILE"){
-            return res.json({message:"file must be image"})
-        }
-    }
+aws.config.update({
+  AWS_ACCESS_KEY_ID:process.env.AWS_ACCESS_KEY_ID,
+AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+AWS_DEFAULT_REGION:process.env.AWS_DEFAULT_REGION
 })
+
+const s3 = new aws.S3();
+
+const upload=multer({
+  storage:multerS3({
+    bucket:process.env.AWS_BUCKET_NAME,
+    s3:s3,
+    acl:"public-read",
+    key: (req, file, cb) => {
+      cb(null, `${uuid()}-${file.originalname}`);
+    }
+  })
+})
+
+router.post('/upload',upload.single("avatar"),(req,res)=>{
+   console.log(req.file)
+  res.send(`sucessfully uploaded at ${req.file.location}` )
+})
+
+
+
+ 
 
 module.exports = router;
