@@ -3,7 +3,7 @@ const userModel=require("../../db/models/registerSchema.js")
 var authTokenCheck = async(req,res,next)=>{
     let token
     const {authorization} = req.headers
-    // console.log(authorization);
+     console.log(authorization);
     if(authorization&&authorization.startsWith('Bearer')){
         try {
             //Get token from header
@@ -11,7 +11,7 @@ var authTokenCheck = async(req,res,next)=>{
             // console.log(token)
             //Verify Token
             const { userID }= jwt.verify(token,process.env.JWT_SECRET_KEY)
-// console.log(userID);
+console.log(userID);
             // Get user from token
             req.user = await userModel.findById(userID).select('-password');
             // console.log(req.user);
@@ -19,11 +19,23 @@ var authTokenCheck = async(req,res,next)=>{
             next()
         } catch (error) {
             console.log(error)
-            res.status(404).send({"status":"failed","message":"Unauthorized User"})
+            res.status(404).send({
+                data: {},
+                error: {
+                   message: "invaild token"
+                
+                }
+                })
             
         }
         if(!token){
-        res.status(401).send({"status":"failed","message":"Unauthorized User,No token"})}
+        res.status(401).send({
+            data: {},
+            error: {
+               message: "no token"
+            
+            }
+            })}
     }
 
 }
