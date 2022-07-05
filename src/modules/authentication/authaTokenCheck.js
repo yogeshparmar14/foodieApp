@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken');
 const userModel=require("../../db/models/registerSchema.js")
-var checkUserAuth = async(req,res,next)=>{
+var authTokenCheck = async(req,res,next)=>{
     let token
     const {authorization} = req.headers
     // console.log(authorization);
@@ -28,4 +28,4 @@ var checkUserAuth = async(req,res,next)=>{
 
 }
 
-module.exports= checkUserAuth;
+module.exports= authTokenCheck;
