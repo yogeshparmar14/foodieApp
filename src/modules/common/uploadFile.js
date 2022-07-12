@@ -30,9 +30,5 @@ router.post('/upload',upload.single("avatar"),(req,res)=>{
   res.send(`sucessfully uploaded at ${req.file.location}` )
 })
 
-
-
- 
-
 module.exports = router;
  

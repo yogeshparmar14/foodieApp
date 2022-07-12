@@ -3,8 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt =require('jsonwebtoken');
 
 const registration = async (req,res)=>{
-    const {name,email,password,termCondition,userType} = req.body
-
+    const {name,phone,email,password,termCondition,userType} = req.body
     const user = await userModel.findOne({email})
     if(user) return res.status(403).send({
         data: {},
@@ -12,11 +11,12 @@ const registration = async (req,res)=>{
            email: "Email is already registered email"
         }
         })
-    if(!name || !email||!password||!termCondition)
+    if(!name||!phone||!email||!password||!termCondition)
         return res.status(403).send({
             data: {},
             error: {
                email: "Email is required",
+               phone:"Phone is required",
                password: "Password is required",
                termCondition:"TermCondition is required"
             
@@ -29,6 +29,7 @@ const registration = async (req,res)=>{
                     const doc = new userModel({
                         name:name,
                         email:email,
+                        phone:phone,
                         password:hashPassword,
                         termCondition:termCondition,
                         userType:userType

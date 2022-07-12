@@ -7,7 +7,9 @@ const authValidation = async (req,res,next)=>{
                 .max(30).message("the maximum number of string characters required is 3o or less than")
                 .pattern(new RegExp(/^[a-zA-Z ]*$/)).message("Name can only contain alphabets")
                 .required(),
-                email: Joi.string()
+            phone:Joi.number()
+            .required(),
+            email: Joi.string()
                 .email().message("Please enter valid Email")
                 .required(),
         
