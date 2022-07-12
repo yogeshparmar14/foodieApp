@@ -23,4 +23,14 @@ const addDish = async (req,res)=>{
     }
 }
 
-module.exports = addDish
+const getAllDish = async (req,res)=>{
+    try{
+        const data = await userModel.find();
+        res.json(data)
+    }
+    catch(error){
+        res.status(403).json({"message":"Unable to fatch dish"})
+    }
+}
+
+module.exports = {addDish,getAllDish}
